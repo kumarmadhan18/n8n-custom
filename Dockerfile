@@ -1,14 +1,16 @@
-FROM n8nio/n8n
+FROM n8nio/n8n:latest
 
 USER root
 
-# Install packages (Alpine uses apk, not apt)
-RUN apk update && apk add python3 py3-pip zip
+# Install system dependencies (Debian-based)
+RUN apt-get update \
+ && apt-get install -y python3 python3-pip zip \
+ && rm -rf /var/lib/apt/lists/*
 
-# Install Python libraries
+# Install Python packages
 RUN pip3 install python-pptx python-docx
 
-# Enable execute command
+# Enable Execute Command
 ENV N8N_ENABLE_EXECUTE_COMMAND=true
 
 USER node
